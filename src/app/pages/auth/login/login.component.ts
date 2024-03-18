@@ -43,15 +43,11 @@ export class LoginComponent {
       );
 
       if (data.user != null) {
-        console.log(data);
-
         if (data.user!.role === 'authenticated') {
           this.router.navigate(['todo']);
         } else {
         }
       } else {
-        console.log(error?.message);
-        console.log(data);
       }
     } else {
       this.loginForm.markAllAsTouched();

@@ -62,12 +62,8 @@ export class RegisterComponent {
 
       this.auth
         .signUp(this.registerForm.value.email, this.registerForm.value.password)
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+        .then((res) => {})
+        .catch((err) => {});
     } else {
       this.registerForm.markAllAsTouched();
     }

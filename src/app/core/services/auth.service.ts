@@ -11,7 +11,7 @@ export class AuthService {
   constructor() {
     this.supabase_client = createClient(
       environment.supabase.url,
-      environment.supabase.key
+      environment.supabase.key,
     );
   }
 
