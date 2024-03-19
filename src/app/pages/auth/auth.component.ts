@@ -1,33 +1,10 @@
 import { Component } from '@angular/core';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
-  selector: 'app-login',
+  selector: 'app-auth',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [RouterOutlet],
   templateUrl: './auth.component.html',
-  styleUrl: './auth.component.sass',
 })
-export class AuthComponent {
-  loginForm!: FormGroup;
-
-  constructor(private fb: FormBuilder) {
-    this.loginForm = this.fb.group({
-      email: new FormControl('', [Validators.required, Validators.email]),
-      password: new FormControl('', [Validators.required]),
-    });
-  }
-
-  onSubmit() {
-    if (this.loginForm.valid) {
-    } else {
-      this.loginForm.markAllAsTouched();
-    }
-  }
-}
+export class AuthComponent {}

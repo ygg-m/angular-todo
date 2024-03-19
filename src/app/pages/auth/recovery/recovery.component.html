@@ -42,52 +42,27 @@
         />
       </div>
 
-      <!-- Password -->
-      <div class="flex flex-col gap-1">
-        <label for="password" class="form-label">Password</label>
-        <input
-          type="password"
-          placeholder="Password"
-          formControlName="password"
-          class="form-input"
-        />
-        <div class="flex w-full justify-end">
-          <a
-            class="text-sm text-slate-500 duration-100 hover:text-red-500"
-            routerLink="/auth/recovery"
-            routerLinkActive="active"
-            ariaCurrentWhenActive="page"
-          >
-            Forgot Password?
-          </a>
-        </div>
-      </div>
-
       <!-- Error Message -->
-      <div *ngIf="errorMessage !== ''">
-        <p class="text-red-500 text-center">
-          {{ errorMessage }}
+      <div *ngIf="emailSent">
+        <p
+          class="bg-green-200 text-green-900 font text-center px-8 p-4 rounded-xl"
+        >
+          Instructions for resetting your password was sent to the e-mail above.
         </p>
       </div>
 
       <!-- Buttons -->
-      <button type="submit" class="btn">Login to Account</button>
-      <a
-        class="text-slate-500 w-full text-center"
-        routerLink="/todo"
-        routerLinkActive="active"
-        ariaCurrentWhenActive="page"
-      >
-        Enter as a Guest
-      </a>
+      <button *ngIf="!emailSent" type="submit" class="btn mt-4">
+        Recover Password
+      </button>
     </form>
 
     <!-- Divider -->
     <!-- <div class="flex justify-between items-center">
-      <div class="h-px bg-slate-300 flex-grow"></div>
-      <span class="-mt-1 text-slate-500 px-4">OR</span>
-      <div class="h-px bg-slate-300 flex-grow"></div>
-    </div> -->
+        <div class="h-px bg-slate-300 flex-grow"></div>
+        <span class="-mt-1 text-slate-500 px-4">OR</span>
+        <div class="h-px bg-slate-300 flex-grow"></div>
+      </div> -->
 
     <!-- Social Login Buttons -->
   </div>

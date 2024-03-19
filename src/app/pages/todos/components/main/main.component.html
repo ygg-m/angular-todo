@@ -1,0 +1,18 @@
+<section class="flex flex-col" [ngClass]="{ hidden: noTodoClass$ | async }">
+  <input
+    type="checkbox"
+    id="toggle-all"
+    class="toggle-all"
+    [checked]="isAllTodosSelected$ | async"
+    (change)="toggleAllTodos($event)"
+  />
+  <label for="toggle-all">Mark all as completed</label>
+  <ul class="flex flex-col">
+    <app-todo
+      *ngFor="let todo of visibleTodos$ | async"
+      [todo]="todo"
+      [isEditing]="editingId === todo.id"
+      (setEditingId)="setEditingId($event)"
+    />
+  </ul>
+</section>

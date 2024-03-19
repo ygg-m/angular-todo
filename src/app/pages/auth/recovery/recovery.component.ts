@@ -10,42 +10,31 @@ import {
 import { AuthService } from '../../../services/auth.service';
 
 @Component({
-  selector: 'app-register',
+  selector: 'app-recovery',
   standalone: true,
   imports: [
     CommonModule,
-    RouterOutlet,
+    ReactiveFormsModule,
     RouterLink,
     RouterLinkActive,
-    ReactiveFormsModule,
+    RouterOutlet,
   ],
-  templateUrl: './register.component.html',
+  templateUrl: './recovery.component.html',
 })
-export class RegisterComponent {
+export class RecoveryComponent {
   private fb = inject(FormBuilder);
   private auth = inject(AuthService);
-  private router = inject(Router);
+
+  emailSent: boolean = false;
 
   form = this.fb.nonNullable.group({
     email: ['', Validators.required],
-    password: ['', Validators.required],
-    confirmPassword: ['', Validators.required],
   });
 
   async onSubmit(): Promise<void> {
     if (this.form.valid) {
-      const { data, error } = await this.auth.signUp(
-        this.form.value.email!,
-        this.form.value.password!,
-      );
-
-      if (data.user !== null) {
-        if (data.user!.role === 'authenticated') this.router.navigate(['todo']);
-        else {
-        }
-      } else {
-        this.form.markAllAsTouched();
-      }
-    }
+      await this.auth.recoverPassword(this.form.value.email!);
+      this.emailSent = true;
+    } else this.form.markAsTouched();
   }
 }

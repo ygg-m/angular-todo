@@ -1,36 +1,46 @@
 import { Routes } from '@angular/router';
 import { AuthComponent } from './pages/auth/auth.component';
 import { LoginComponent } from './pages/auth/login/login.component';
+import { RecoveryComponent } from './pages/auth/recovery/recovery.component';
 import { RegisterComponent } from './pages/auth/register/register.component';
-import { TodoComponent } from './pages/todo/todo.component';
-import { DefaultComponent } from './shared/layouts/default/default.component';
-import { MasterComponent } from './shared/layouts/master/master.component';
+import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
+import { TodosComponent } from './pages/todos/todos.component';
 
 export const routes: Routes = [
   {
     path: '',
-    component: DefaultComponent,
-    // canActivate: [guestGuard],
+    // component: AuthComponent,
+    redirectTo: '/auth/login',
+    pathMatch: 'full',
+  },
+  {
+    path: 'todo',
+    title: 'ToDo',
+    component: TodosComponent,
+  },
+  {
+    path: 'auth',
+    component: AuthComponent,
     children: [
       {
-        path: '' || 'login',
+        path: 'register',
+        title: 'ToDo - Register',
+        component: RegisterComponent,
+      },
+      {
+        path: 'login',
+        title: 'ToDo - Login',
         component: LoginComponent,
       },
       {
-        path: 'register',
-        component: RegisterComponent,
+        path: 'recovery',
+        title: 'ToDo - Recover Password',
+        component: RecoveryComponent,
       },
     ],
   },
-  {
-    path: '',
-    component: MasterComponent,
-    // canActivate: [authGuard],
-    children: [
-      {
-        path: 'todo',
-        component: TodoComponent,
-      },
-    ],
-  },
+  { path: 'login', redirectTo: '/auth/login' },
+  { path: 'register', redirectTo: '/auth/register' },
+  { path: 'recovery', redirectTo: '/auth/recovery' },
+  { path: '**', component: PageNotFoundComponent },
 ];

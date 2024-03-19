@@ -1,27 +1,62 @@
-# ToDo
+# Todo Angular Project
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.2.0.
+This is a Todo Angular project that utilizes Tailwind CSS for styling, Angular version 17.2.0 for frontend development, and Supabase for authentication and storage.
 
-## Development server
+## Features
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+- Manage your todos easily with this intuitive web application.
+- Stylish UI design powered by Tailwind CSS.
+- Seamless authentication and data storage provided by Supabase.
 
-## Code scaffolding
+## Technologies Used
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+- Angular 17.2.0: Angular is a popular front-end framework for building single-page web applications. It provides a robust structure for development, data binding, and dependency injection.
+- Tailwind CSS: Tailwind CSS is a utility-first CSS framework that allows you to quickly build custom designs without writing traditional CSS. It offers a set of pre-defined utility classes that you can apply directly to your HTML elements.
+- Supabase: Supabase is an open-source alternative to Firebase that provides a suite of tools for building scalable web applications. It offers authentication, real-time database, file storage, and more.
 
-## Build
+## Live Demo
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+You can access the live demo of this Todo Angular project [here](https://ygg-m.github.io/todo).
 
-## Running unit tests
+## Installation
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+To run this project locally, follow these steps:
 
-## Running end-to-end tests
+1. Clone the repository:
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+```
+git clone https://github.com/ygg-m/todo.git
+```
 
-## Further help
+2. Navigate to the project directory:
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+```javascript
+cd todo
+```
+
+3. Install dependencies:
+
+```javascript
+// using npm
+npm install
+// using yarn
+yarn install
+```
+
+4. Start the development server:
+
+```javascript
+ng serve
+```
+
+5. Open your browser and navigate to `http://localhost:4200` to view the application.
+
+## Usage
+
+- Sign up or log in using your Supabase account to start using the application.
+- Add, edit, or delete todos as needed.
+- Your data will be securely stored in Supabase or your LocalStorage if log in as Guest.
+
+## Contributing
+
+Contributions are welcome! If you would like to contribute to this project, please fork the repository and submit a pull request with your changes.

@@ -1,0 +1,10 @@
+<header class="text-center flex flex-col gap-8">
+  <input
+    placeholder="What needs to be done?"
+    autofocus
+    class="drop-shadow-xl p-4 px-8 text-2xl max-w-md w-screen border border-slate-300 rounded-xl"
+    [value]="text"
+    (keyup)="changeText($event)"
+    (keyup.Enter)="addTodo()"
+  />
+</header>

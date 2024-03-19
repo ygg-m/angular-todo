@@ -1,56 +1,60 @@
-import { Component } from '@angular/core';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { Component, inject } from '@angular/core';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
   Router,
   RouterLink,
   RouterLinkActive,
-  RouterModule,
+  RouterOutlet,
 } from '@angular/router';
-import { AuthService } from '../../../core/services/auth.service';
+import { AuthService } from '@app/services/auth.service';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterLink, RouterLinkActive, RouterModule],
+  imports: [
+    CommonModule,
+    RouterOutlet,
+    RouterLink,
+    RouterLinkActive,
+    ReactiveFormsModule,
+  ],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.sass',
 })
 export class LoginComponent {
-  loginForm!: FormGroup;
+  private fb = inject(FormBuilder);
+  private router = inject(Router);
+  private auth = inject(AuthService);
 
-  constructor(
-    private fb: FormBuilder,
-    private auth: AuthService,
-    private router: Router
-  ) {
-    this.loginForm = this.fb.group({
-      email: new FormControl('', [Validators.required, Validators.email]),
-      password: new FormControl('', [Validators.required]),
-    });
-  }
+  errorMessage: string = '';
 
-  async onSubmit() {
-    if (this.loginForm.valid) {
+  form = this.fb.nonNullable.group({
+    email: ['', Validators.required],
+    password: ['', Validators.required],
+  });
+
+  async onSubmit(): Promise<void> {
+    if (this.form.valid) {
       const { data, error } = await this.auth.signIn(
-        this.loginForm.value.email,
-        this.loginForm.value.password
+        this.form.value.email!,
+        this.form.value.password!,
       );
 
-      if (data.user != null) {
-        if (data.user!.role === 'authenticated') {
-          this.router.navigate(['todo']);
-        } else {
-        }
-      } else {
-      }
+      if (data.user !== null) this.router.navigate(['todo']);
+
+      if (error) this.errorMessage = error.message;
     } else {
-      this.loginForm.markAllAsTouched();
+      this.form.markAllAsTouched();
     }
+  }
+
+  async getUserInfo() {
+    const {
+      data: { user },
+      error,
+    } = await this.auth.getUser();
+
+    console.log(user);
+    console.log(error);
   }
 }
