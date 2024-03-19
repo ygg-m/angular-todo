@@ -19,9 +19,11 @@ export class TodoService {
       id: uuid(),
     };
 
-    const updatedTodos = [...this.todos$.getValue(), newTodo];
-    this.todos$.next(updatedTodos);
-    this.saveTodoList(this.todos$.value);
+    if (text !== '') {
+      const updatedTodos = [...this.todos$.getValue(), newTodo];
+      this.todos$.next(updatedTodos);
+      this.saveTodoList(this.todos$.value);
+    }
   }
 
   toggleAll(isCompleted: boolean): void {
@@ -32,6 +34,7 @@ export class TodoService {
       };
     });
     this.todos$.next(updatedTodos);
+    this.saveTodoList(this.todos$.value);
   }
 
   changeFilter(filter: FilterEnum): void {
@@ -72,6 +75,7 @@ export class TodoService {
       return todo;
     });
     this.todos$.next(updatedTodos);
+    this.saveTodoList(this.todos$.value);
   }
 
   saveTodoList(todoList: TodoInterface[]): void {
