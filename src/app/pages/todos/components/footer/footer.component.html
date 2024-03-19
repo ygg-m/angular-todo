@@ -1,5 +1,5 @@
 <footer
-  class="flex justify-between text-slate-500 border-t border-slate-200 p-2"
+  class="flex flex-col items-center gap-4 sm:flex-row justify-between text-slate-500 border-t border-slate-200 p-2"
   [class]="{ hidden: noTodoClass$ | async }"
 >
   <span [class]="(activeCount$ | async) === 0 ? 'text-blue-500' : ''">
@@ -7,7 +7,7 @@
     {{ itemsLeftText$ | async }}
     <span *ngIf="(activeCount$ | async) === 0">🎉</span>
   </span>
-  <ul class="flex gap-4 jusify-between">
+  <ul class="flex gap-4 jusify-between flex-wrap">
     <li>
       <a
         href="/"
