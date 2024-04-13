@@ -20,6 +20,7 @@ export class MainComponent implements OnInit {
   noTodoClass$: Observable<boolean>;
   isAllTodosSelected$: Observable<boolean>;
   editingId: string | null = null;
+  markAllAsCompletedText: string = 'Mark all as Completed';
 
   ngOnInit(): void {
     this.loadTodoList();
@@ -30,6 +31,13 @@ export class MainComponent implements OnInit {
     this.isAllTodosSelected$ = this.todoService.todos$.pipe(
       map((todos) => todos.every((todo) => todo.isCompleted)),
     );
+
+    // change mark all todos as completed text
+    this.isAllTodosSelected$.subscribe((isAllSelected) => {
+      this.markAllAsCompletedText = isAllSelected
+        ? 'Unmark all Todos'
+        : 'Mark all Todos as completed';
+    });
 
     // hide todos
     this.noTodoClass$ = this.todoService.todos$.pipe(

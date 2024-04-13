@@ -1,80 +1,117 @@
 <div class="w-screen h-screen flex p-8 justify-center items-center">
   <div
-    class="p-8 bg-white rounded-3xl shadow-2xl flex flex-col gap-8 border border-slate-400 flex-grow h-fit max-w-md"
+    class="p-8 bg-white rounded-3xl shadow-2xl flex flex-col gap-4 border border-slate-400 flex-grow h-fit max-w-md"
   >
-    <!-- Register / Login -->
-    <div
-      class="flex p-1 justify-center border border-slate-200 gap-4 items-center bg-slate-100 rounded-xl shadow-inner"
-    >
-      <a
-        class="btn-sm"
-        routerLink="/auth/register"
-        routerLinkActive="active"
-        ariaCurrentWhenActive="page"
+    <ng-container *ngIf="!registerComplete">
+      <!-- Register / Login -->
+      <div
+        class="flex p-1 justify-center border border-slate-200 gap-4 items-center bg-slate-100 rounded-xl shadow-inner"
       >
-        Register
-      </a>
-      <a
-        class="text-slate-500 text-sm flex-grow rounded-lg duration-100 hover:text-slate-800 text-center cursor-pointer"
-        routerLink="/auth/login"
-        routerLinkActive="active"
-        ariaCurrentWhenActive="page"
-      >
-        Login
-      </a>
-    </div>
-
-    <!-- Login Form -->
-    <form
-      [formGroup]="form"
-      (ngSubmit)="onSubmit()"
-      action=""
-      class="flex flex-col gap-4"
-    >
-      <!-- Email -->
-      <div class="flex flex-col gap-1">
-        <label for="email" class="form-label">Email</label>
-        <input
-          formControlName="email"
-          type="email"
-          placeholder="Email"
-          class="form-input"
-        />
+        <a
+          class="btn-sm"
+          routerLink="/auth/register"
+          routerLinkActive="active"
+          ariaCurrentWhenActive="page"
+        >
+          Register
+        </a>
+        <a
+          class="text-slate-500 text-sm flex-grow rounded-lg duration-100 hover:text-slate-800 text-center cursor-pointer"
+          routerLink="/auth/login"
+          routerLinkActive="active"
+          ariaCurrentWhenActive="page"
+        >
+          Login
+        </a>
       </div>
 
-      <!-- Password -->
-      <div class="flex flex-col gap-1">
-        <label for="password" class="form-label">Password</label>
-        <input
-          formControlName="password"
-          type="password"
-          placeholder="Password"
-          class="form-input"
-        />
-      </div>
+      <p class="text-sm text-slate-400 text-center">All fields are required.</p>
 
-      <!-- Confirm Password -->
-      <div class="flex flex-col gap-1">
-        <label for="password" class="form-label">Confirm Password</label>
-        <input
-          formControlName="confirmPassword"
-          type="password"
-          placeholder="Confirm Password"
-          class="form-input"
-        />
+      <!-- Login Form -->
+      <form
+        [formGroup]="form"
+        (ngSubmit)="onSubmit()"
+        action=""
+        class="flex flex-col gap-4"
+      >
+        <!-- Username -->
+        <div class="flex flex-col gap-1">
+          <label for="username" class="form-label">Username</label>
+          <input
+            formControlName="username"
+            type="username"
+            placeholder="Username"
+            class="form-input"
+          />
+        </div>
+
+        <!-- Email -->
+        <div class="flex flex-col gap-1">
+          <label for="email" class="form-label">Email</label>
+          <input
+            formControlName="email"
+            type="email"
+            placeholder="Email"
+            class="form-input"
+          />
+        </div>
+
+        <!-- Password -->
+        <div class="flex flex-col gap-1">
+          <label for="password" class="form-label">Password</label>
+          <input
+            formControlName="password"
+            type="password"
+            placeholder="Password"
+            class="form-input"
+          />
+        </div>
+
+        <!-- Confirm Password -->
+        <div class="flex flex-col gap-1">
+          <label for="password" class="form-label">Confirm Password</label>
+          <input
+            formControlName="confirmPassword"
+            type="password"
+            placeholder="Confirm Password"
+            class="form-input"
+          />
+        </div>
+
+        <!-- Error Message -->
+        <div *ngIf="errorMessage !== ''">
+          <p class="text-red-500 text-center">
+            {{ errorMessage }}
+          </p>
+        </div>
+
+        <!-- Buttons -->
+        <button type="submit" class="btn">Register Account</button>
+      </form>
+    </ng-container>
+    <!-- Divider -->
+
+    <ng-container *ngIf="registerComplete">
+      <div class="text-center flex flex-col gap-8 p-4 bg-slate-100 rounded-lg">
+        <p class="text-blue-500">
+          To complete the registration process, please click the link we sent to
+          your email.
+        </p>
+        <p class="text-slate-500">
+          If you don't see the email in your inbox, please check your spam
+          folder.
+        </p>
       </div>
 
       <!-- Buttons -->
-      <button type="submit" class="btn">Register Account</button>
-    </form>
-
-    <!-- Divider -->
-    <!-- <div class="flex justify-between items-center">
-      <div class="h-px bg-slate-300 flex-grow"></div>
-      <span class="-mt-1 text-slate-500 px-4">OR</span>
-      <div class="h-px bg-slate-300 flex-grow"></div>
-    </div> -->
-
-    <!-- Social Login Buttons -->
+      <button
+        routerLink="/auth/login"
+        routerLinkActive="active"
+        ariaCurrentWhenActive="page"
+        class="btn mt-4"
+      >
+        Return to Login
+      </button>
+    </ng-container>
   </div>
 </div>

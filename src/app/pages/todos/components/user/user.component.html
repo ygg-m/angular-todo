@@ -1,0 +1,16 @@
+<div class="flex flex-col w-full text-center max-w-md px-4">
+  <p class="text-slate-500" *ngIf="haveToken">Welcome, {{ username }}!</p>
+  <div *ngIf="!haveToken">
+    <p>Your Todo List is being saved on your Browser locally.</p>
+    <p>
+      <a
+        class="text-blue-500 font-medium hover:text-blue-700 duration-100 cursor-pointer"
+        routerLink="/auth/login"
+        routerLinkActive="active"
+        ariaCurrentWhenActive="page"
+        >Login In</a
+      >
+      to access it anywhere.
+    </p>
+  </div>
+</div>

@@ -22,5 +22,6 @@ export class HeaderComponent {
 
   addTodo(): void {
     this.todoService.addTodo(this.text);
+    this.text = '';
   }
 }

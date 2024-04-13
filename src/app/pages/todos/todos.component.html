@@ -1,19 +1,26 @@
 <div class="bg-slate-100 w-screen min-h-screen flex flex-col justify-between">
   <div class="flex flex-col items-center gap-8">
     <h1 class="text-4xl font-light text-blue-500 pt-8">Todos</h1>
-    <app-user />
+    <app-user [userData]="userData" />
     <div
       class="flex flex-col items-center justify-center max-w-screen-sm w-screen gap-4"
     >
       <app-header class="w-full max-w-md" />
-      <app-main class="full max-w-md" />
+      <app-main class="w-full max-w-md" />
       <app-footer class="w-full max-w-md" />
     </div>
   </div>
 
-  <div class="p-4">
+  <div class="p-4 flex flex-col items-center justify-center">
+    <button
+      *ngIf="!isGuest"
+      (click)="logOut()"
+      class="border border-red-300 p-1 px-4 rounded-lg text-red-400 hover:bg-red-100 text-xs duration-100 mb-4"
+    >
+      Log Out
+    </button>
     <p class="text-slate-400 text-sm text-center">
-      Double click to edit a Todo.
+      Double click to edit a Todo. Press Enter while editing to confirm.
     </p>
     <p *ngIf="isGuest" class="text-slate-400 text-sm text-center">
       As a Guest, your Todo List will be saved on your Browser Local Storage.

@@ -25,8 +25,11 @@ export class RegisterComponent {
   private fb = inject(FormBuilder);
   private auth = inject(AuthService);
   private router = inject(Router);
+  registerComplete: boolean = false;
+  errorMessage: string | unknown = '';
 
   form = this.fb.nonNullable.group({
+    username: ['', Validators.required],
     email: ['', Validators.required],
     password: ['', Validators.required],
     confirmPassword: ['', Validators.required],
@@ -34,18 +37,21 @@ export class RegisterComponent {
 
   async onSubmit(): Promise<void> {
     if (this.form.valid) {
-      const { data, error } = await this.auth.signUp(
-        this.form.value.email!,
-        this.form.value.password!,
-      );
+      try {
+        const data = await this.auth.signUp(
+          this.form.value.email!,
+          this.form.value.password!,
+        );
 
-      if (data.user !== null) {
-        if (data.user!.role === 'authenticated') this.router.navigate(['todo']);
-        else {
+        if (data.user !== null) {
+          this.auth.updateUsername(this.form.value.username!);
+          this.router.navigate(['/todo']);
         }
-      } else {
-        this.form.markAllAsTouched();
+      } catch (err: any) {
+        this.errorMessage = this.auth.getFirebaseErrorMessage(err.code);
       }
+    } else {
+      this.form.markAllAsTouched();
     }
   }
 }

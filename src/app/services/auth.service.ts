@@ -1,6 +1,14 @@
 import { Injectable } from '@angular/core';
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { SupabaseClient, createClient } from '@supabase/supabase-js';
+import { FirebaseApp, initializeApp } from 'firebase/app';
+import {
+  createUserWithEmailAndPassword,
+  getAuth,
+  signInWithEmailAndPassword,
+  signOut,
+  updateProfile,
+} from 'firebase/auth';
 import { env } from '../enviroments/enviroment.development';
 
 @Injectable({
@@ -8,25 +16,27 @@ import { env } from '../enviroments/enviroment.development';
 })
 export class AuthService {
   private supabase_client: SupabaseClient;
+  private firebase_client: FirebaseApp;
+  private auth;
 
   constructor() {
     this.supabase_client = createClient(env.supabase.url, env.supabase.key);
+    this.firebase_client = initializeApp(env.firebase);
+    this.auth = getAuth();
   }
 
   signUp(email: string, password: string) {
-    return this.supabase_client.auth.signUp({ email, password });
+    return createUserWithEmailAndPassword(this.auth, email, password);
   }
 
   signIn(email: string, password: string) {
-    return this.supabase_client.auth.signInWithPassword({ email, password });
+    return signInWithEmailAndPassword(this.auth, email, password);
   }
 
-  recoverPassword(email: string) {
-    return this.supabase_client.auth.resetPasswordForEmail(email);
-  }
+  recoverPassword(email: string) {}
 
   signOut() {
-    return this.supabase_client.auth.signOut();
+    return signOut(this.auth);
   }
 
   confirmPasswordValidator(originalPasswordControlName: string): ValidatorFn {
@@ -45,7 +55,55 @@ export class AuthService {
     };
   }
 
+  getFirebaseErrorMessage(error: string): string {
+    switch (error) {
+      case 'auth/email-already-in-use':
+        return 'The email address is already in use. Please use a different email address.';
+      // Add more cases for other error codes as needed
+      default:
+        return 'An error occurred. Please try again later.';
+    }
+  }
+
   getUser() {
     return this.supabase_client.auth.getUser();
+  }
+
+  checkToken(): boolean {
+    // find if there's an auth-token in local storage
+    let keyFound = false;
+
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key?.includes('auth-token')) {
+        keyFound = true;
+        break;
+      }
+    }
+
+    if (keyFound) return true;
+    else return false;
+  }
+
+  updateEmail(email: string) {
+    return this.supabase_client.auth.updateUser({
+      email: email,
+    });
+  }
+
+  updatePassword(password: string) {
+    return this.supabase_client.auth.updateUser({
+      password: password,
+    });
+  }
+
+  updateUsername(username: string) {
+    // supabase
+    // return this.supabase_client.auth.updateUser({
+    //   data: { first_name: username },
+    // });
+
+    // firebase
+    return updateProfile(this.auth.currentUser!, { displayName: username });
   }
 }

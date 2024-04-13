@@ -35,26 +35,18 @@ export class LoginComponent {
 
   async onSubmit(): Promise<void> {
     if (this.form.valid) {
-      const { data, error } = await this.auth.signIn(
-        this.form.value.email!,
-        this.form.value.password!,
-      );
+      try {
+        const data = await this.auth.signIn(
+          this.form.value.email!,
+          this.form.value.password!,
+        );
 
-      if (data.user !== null) this.router.navigate(['todo']);
-
-      if (error) this.errorMessage = error.message;
-    } else {
-      this.form.markAllAsTouched();
+        if (data.user !== null) {
+          this.router.navigate(['/todo']);
+        }
+      } catch (err: any) {
+        this.errorMessage = this.auth.getFirebaseErrorMessage(err.code);
+      }
     }
-  }
-
-  async getUserInfo() {
-    const {
-      data: { user },
-      error,
-    } = await this.auth.getUser();
-
-    console.log(user);
-    console.log(error);
   }
 }

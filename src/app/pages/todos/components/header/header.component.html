@@ -2,7 +2,7 @@
   <input
     placeholder="What needs to be done?"
     autofocus
-    class="drop-shadow-xl p-4 px-8 text-2xl max-w-md w-screen border border-slate-300 rounded-xl"
+    class="p-4 px-8 text-2xl border border-slate-300 rounded-xl focus:outline-blue-300 bg-slate-100 shadow-inner"
     [value]="text"
     (keyup)="changeText($event)"
     (keyup.Enter)="addTodo()"

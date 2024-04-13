@@ -7,12 +7,13 @@ import {
   OnChanges,
   OnInit,
   Output,
+  Renderer2,
   SimpleChanges,
   ViewChild,
   inject,
 } from '@angular/core';
-import { TodoInterface } from '../../../../types/todo/interface';
-import { TodoService } from '../../services/todo.service';
+import { TodoService } from '@app/pages/todos/services/todo.service';
+import { TodoInterface } from '@app/types/todo/interface';
 
 @Component({
   selector: 'app-todo',
@@ -27,6 +28,18 @@ export class TodoComponent implements OnInit, OnChanges {
     new EventEmitter();
   @ViewChild('textInput') textInput!: ElementRef;
   editingText: string = '';
+
+  constructor(private renderer: Renderer2) {
+    // closes the text input if clicked outside of it
+    this.renderer.listen('window', 'click', (e: Event) => {
+      if (this.textInput) {
+        if (e.target !== this.textInput.nativeElement) {
+          this.editingText = this.todoProps.text;
+          this.setEditingIdEvent.emit(null);
+        }
+      }
+    });
+  }
 
   todoService = inject(TodoService);
 
