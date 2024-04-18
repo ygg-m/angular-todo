@@ -35,7 +35,7 @@ export class TodosComponent implements OnInit {
 
   ngOnInit(): void {
     this.auth.getUser().subscribe((user) => {
-      this.currentUser$ = user;
+      // this.currentUser$ = user;
     });
   }
 
