@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
-import { SupabaseClient, createClient } from '@supabase/supabase-js';
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { FirebaseApp, initializeApp } from 'firebase/app';
 import {
   createUserWithEmailAndPassword,
@@ -8,7 +8,9 @@ import {
   signInWithEmailAndPassword,
   signOut,
   updateProfile,
+  User,
 } from 'firebase/auth';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { env } from '../enviroments/enviroment.development';
 
 @Injectable({
@@ -18,11 +20,14 @@ export class AuthService {
   private supabase_client: SupabaseClient;
   private firebase_client: FirebaseApp;
   private auth;
+  private currentUser: BehaviorSubject<User | null>;
 
   constructor() {
     this.supabase_client = createClient(env.supabase.url, env.supabase.key);
     this.firebase_client = initializeApp(env.firebase);
     this.auth = getAuth();
+    this.currentUser = new BehaviorSubject<User | null>(null);
+    this.initAuthStateListener();
   }
 
   signUp(email: string, password: string) {
@@ -39,21 +44,21 @@ export class AuthService {
     return signOut(this.auth);
   }
 
-  confirmPasswordValidator(originalPasswordControlName: string): ValidatorFn {
-    return (control: AbstractControl): ValidationErrors | null => {
-      const originalPassword = control.root.get(
-        originalPasswordControlName,
-      )?.value;
-      const confirmedPassword = control.value;
+  // confirmPasswordValidator(originalPasswordControlName: string): ValidatorFn {
+  //   return (control: AbstractControl): ValidationErrors | null => {
+  //     const originalPassword = control.root.get(
+  //       originalPasswordControlName,
+  //     )?.value;
+  //     const confirmedPassword = control.value;
 
-      // Check if passwords match
-      if (originalPassword !== confirmedPassword) {
-        return { confirmPassword: true };
-      }
+  //     // Check if passwords match
+  //     if (originalPassword !== confirmedPassword) {
+  //       return { confirmPassword: true };
+  //     }
 
-      return null;
-    };
-  }
+  //     return null;
+  //   };
+  // }
 
   getFirebaseErrorMessage(error: string): string {
     switch (error) {
@@ -65,8 +70,14 @@ export class AuthService {
     }
   }
 
-  getUser() {
-    return this.supabase_client.auth.getUser();
+  private initAuthStateListener(): void {
+    this.auth.onAuthStateChanged((user) => {
+      this.currentUser.next(user);
+    });
+  }
+
+  getUser(): Observable<User | null> {
+    return this.currentUser.asObservable();
   }
 
   checkToken(): boolean {

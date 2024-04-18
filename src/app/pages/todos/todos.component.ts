@@ -1,8 +1,15 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import {
+  Component,
+  inject,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '@app/services/auth.service';
-import { User } from '@supabase/supabase-js';
+import { User } from 'firebase/auth';
+import { Observable } from 'rxjs';
 import { FooterComponent } from './components/footer/footer.component';
 import { HeaderComponent } from './components/header/header.component';
 import { MainComponent } from './components/main/main.component';
@@ -24,16 +31,12 @@ export class TodosComponent implements OnInit {
   isGuest: boolean = false;
   auth = inject(AuthService);
   router = inject(Router);
-  userData!: User;
+  currentUser$ = Observable<User | null>;
 
-  async ngOnInit(): Promise<void> {
-    if (this.auth.checkToken()) {
-      const {
-        data: { user },
-      } = await this.auth.getUser();
-
-      if (user) this.userData = user;
-    } else this.isGuest = true;
+  ngOnInit(): void {
+    this.auth.getUser().subscribe((user) => {
+      this.currentUser$ = user;
+    });
   }
 
   logOut() {

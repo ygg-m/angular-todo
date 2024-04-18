@@ -20,20 +20,20 @@ import { User } from '@supabase/supabase-js';
 export class UserComponent implements OnChanges {
   haveToken: boolean = false;
   auth = inject(AuthService);
-  @Input() userData!: User | null;
-  username: string = '';
+  // @Input() userData!: User | null;
+  username: string = 'baseUsername';
 
   ngOnChanges(): void {
-    if (this.auth.checkToken()) {
-      this.haveToken = true;
-      this.updateUsername();
-      console.log('user', this.userData);
-    }
+    // if (this.auth.checkToken()) {
+    // this.haveToken = true;
+    // this.updateUsername();
+    // console.log('user', this.userData);
+    // }
   }
 
-  private updateUsername(): void {
-    if (this.userData && this.userData.user_metadata) {
-      this.username = this.userData.user_metadata.first_name;
-    }
-  }
+  // private updateUsername(): void {
+  //   if (this.userData && this.userData.user_metadata) {
+  //     this.username = this.userData.user_metadata.first_name;
+  //   }
+  // }
 }
