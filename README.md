@@ -2,6 +2,9 @@
 
 This project is a Todo application built with Angular 17. It allows users to manage their tasks by providing features such as adding, completing, editing, filtering, and deleting todos. The application integrates with Firebase for authentication and data storage. Additionally, it supports guest mode, where users can use local storage to store their todos without requiring authentication.
 
+## Live 
+You can preview the website at [ygg-todo.web.app](https://ygg-todo.web.app/) which is hosted by Firebase.
+
 ## Features
 
 - **Authentication**: Users can register, login, and reset their passwords securely using Firebase Authentication.
