@@ -1,11 +1,5 @@
 import { CommonModule } from '@angular/common';
-import {
-  Component,
-  inject,
-  OnChanges,
-  OnInit,
-  SimpleChanges,
-} from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { MainService } from '@app/services/main.service';
 import { User } from 'firebase/auth';
@@ -26,7 +20,7 @@ import { UserComponent } from './components/user/user.component';
   ],
   templateUrl: './todos.component.html',
 })
-export class TodosComponent implements OnInit {
+export class TodosComponent {
   isGuest: boolean = false;
   main = inject(MainService);
   router = inject(Router);
@@ -37,8 +31,6 @@ export class TodosComponent implements OnInit {
       this.currentUser$ = user;
     });
   }
-
-  ngOnInit(): void {}
 
   logOut() {
     this.main.signOut().then(() => this.router.navigate(['/auth/login']));
