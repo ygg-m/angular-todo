@@ -12,7 +12,7 @@ import {
   ViewChild,
   inject,
 } from '@angular/core';
-import { TodoService } from '@app/pages/todos/services/todo.service';
+import { TodoService } from '@app/services/todo.service';
 import { TodoInterface } from '@app/types/todo/interface';
 
 @Component({

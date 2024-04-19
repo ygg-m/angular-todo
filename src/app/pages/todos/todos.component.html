@@ -13,7 +13,7 @@
 
   <div class="p-4 flex flex-col items-center justify-center">
     <button
-      *ngIf="!isGuest"
+      *ngIf="currentUser$ !== null"
       (click)="logOut()"
       class="border border-red-300 p-1 px-4 rounded-lg text-red-400 hover:bg-red-100 text-xs duration-100 mb-4"
     >

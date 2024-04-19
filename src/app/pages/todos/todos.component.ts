@@ -9,7 +9,6 @@ import {
 import { Router } from '@angular/router';
 import { AuthService } from '@app/services/auth.service';
 import { User } from 'firebase/auth';
-import { Observable } from 'rxjs';
 import { FooterComponent } from './components/footer/footer.component';
 import { HeaderComponent } from './components/header/header.component';
 import { MainComponent } from './components/main/main.component';
@@ -31,13 +30,15 @@ export class TodosComponent implements OnInit {
   isGuest: boolean = false;
   auth = inject(AuthService);
   router = inject(Router);
-  currentUser$ = Observable<User | null>;
+  currentUser$: User | null | undefined;
 
-  ngOnInit(): void {
+  constructor() {
     this.auth.getUser().subscribe((user) => {
-      // this.currentUser$ = user;
+      this.currentUser$ = user;
     });
   }
+
+  ngOnInit(): void {}
 
   logOut() {
     this.auth.signOut().then(() => this.router.navigate(['/auth/login']));

@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { TodoComponent } from '@app/pages/todos/components/todo/todo.component';
-import { TodoService } from '@app/pages/todos/services/todo.service';
+import { TodoService } from '@app/services/todo.service';
 import { FilterEnum } from '@app/types/todo/filter.enum';
 import { TodoInterface } from '@app/types/todo/interface';
 import { Observable } from 'rxjs/internal/Observable';

@@ -17,6 +17,6 @@ export class AuthComponent implements OnInit {
   }
 
   checkLogin(): void {
-    if (this.auth.checkToken()) this.router.navigate(['todo']);
+    if (this.auth.getUser() !== null) this.router.navigate(['todo']);
   }
 }

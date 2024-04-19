@@ -44,8 +44,9 @@ export class RegisterComponent {
         );
 
         if (data.user !== null) {
-          this.auth.updateUsername(this.form.value.username!);
-          this.router.navigate(['/todo']);
+          this.auth.updateUsername(this.form.value.username!).then(() => {
+            this.router.navigate(['/todo']);
+          });
         }
       } catch (err: any) {
         this.errorMessage = this.auth.getFirebaseErrorMessage(err.code);
