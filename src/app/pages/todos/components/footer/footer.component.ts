@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { TodoService } from '@app/services/todo.service';
+import { MainService } from '@app/services/main.service';
 import { FilterEnum } from '@app/types/todo/filter.enum';
 import { Observable, map } from 'rxjs';
 
@@ -11,7 +11,7 @@ import { Observable, map } from 'rxjs';
   templateUrl: './footer.component.html',
 })
 export class FooterComponent {
-  todoService = inject(TodoService);
+  todoService = inject(MainService);
   noTodoClass$: Observable<boolean>;
   activeCount$: Observable<number>;
   itemsLeftText$: Observable<string>;

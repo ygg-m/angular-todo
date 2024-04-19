@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
   Router,
@@ -7,7 +7,7 @@ import {
   RouterLinkActive,
   RouterOutlet,
 } from '@angular/router';
-import { AuthService } from '@app/services/auth.service';
+import { MainService } from '@app/services/main.service';
 
 @Component({
   selector: 'app-login',
@@ -21,10 +21,10 @@ import { AuthService } from '@app/services/auth.service';
   ],
   templateUrl: './login.component.html',
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   private fb = inject(FormBuilder);
   private router = inject(Router);
-  private auth = inject(AuthService);
+  private main = inject(MainService);
 
   errorMessage: string = '';
 
@@ -33,10 +33,15 @@ export class LoginComponent {
     password: ['', Validators.required],
   });
 
+  ngOnInit(): void {
+    const user = this.main.getUser();
+    if (user) this.router.navigate(['/todo']);
+  }
+
   async onSubmit(): Promise<void> {
     if (this.form.valid) {
       try {
-        const data = await this.auth.signIn(
+        const data = await this.main.signIn(
           this.form.value.email!,
           this.form.value.password!,
         );
@@ -45,7 +50,7 @@ export class LoginComponent {
           this.router.navigate(['/todo']);
         }
       } catch (err: any) {
-        this.errorMessage = this.auth.getFirebaseErrorMessage(err.code);
+        this.errorMessage = this.main.getFirebaseErrorMessage(err.code);
       }
     }
   }

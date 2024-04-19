@@ -7,7 +7,7 @@ import {
   RouterLinkActive,
   RouterOutlet,
 } from '@angular/router';
-import { AuthService } from '../../../services/auth.service';
+import { MainService } from '../../../services/main.service';
 
 @Component({
   selector: 'app-recovery',
@@ -23,7 +23,7 @@ import { AuthService } from '../../../services/auth.service';
 })
 export class RecoveryComponent {
   private fb = inject(FormBuilder);
-  private auth = inject(AuthService);
+  private main = inject(MainService);
 
   emailSent: boolean = false;
 
@@ -33,7 +33,7 @@ export class RecoveryComponent {
 
   async onSubmit(): Promise<void> {
     if (this.form.valid) {
-      await this.auth.recoverPassword(this.form.value.email!);
+      await this.main.recoverPassword(this.form.value.email!);
       this.emailSent = true;
     } else this.form.markAsTouched();
   }

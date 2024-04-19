@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { TodoService } from '../../../../services/todo.service';
+import { MainService } from '../../../../services/main.service';
 
 @Component({
   selector: 'app-header',
@@ -9,7 +9,7 @@ import { TodoService } from '../../../../services/todo.service';
 })
 export class HeaderComponent {
   text: string = '';
-  todoService = inject(TodoService);
+  todoService = inject(MainService);
 
   constructor() {
     this.todoService.todos$.subscribe((todos) => {});

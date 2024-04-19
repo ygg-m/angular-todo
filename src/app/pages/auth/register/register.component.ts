@@ -7,7 +7,7 @@ import {
   RouterLinkActive,
   RouterOutlet,
 } from '@angular/router';
-import { AuthService } from '../../../services/auth.service';
+import { MainService } from '../../../services/main.service';
 
 @Component({
   selector: 'app-register',
@@ -23,7 +23,7 @@ import { AuthService } from '../../../services/auth.service';
 })
 export class RegisterComponent {
   private fb = inject(FormBuilder);
-  private auth = inject(AuthService);
+  private main = inject(MainService);
   private router = inject(Router);
   registerComplete: boolean = false;
   errorMessage: string | unknown = '';
@@ -38,18 +38,18 @@ export class RegisterComponent {
   async onSubmit(): Promise<void> {
     if (this.form.valid) {
       try {
-        const data = await this.auth.signUp(
+        const data = await this.main.signUp(
           this.form.value.email!,
           this.form.value.password!,
         );
 
         if (data.user !== null) {
-          this.auth.updateUsername(this.form.value.username!).then(() => {
+          this.main.updateUsername(this.form.value.username!).then(() => {
             this.router.navigate(['/todo']);
           });
         }
       } catch (err: any) {
-        this.errorMessage = this.auth.getFirebaseErrorMessage(err.code);
+        this.errorMessage = this.main.getFirebaseErrorMessage(err.code);
       }
     } else {
       this.form.markAllAsTouched();

@@ -7,7 +7,7 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from '@app/services/auth.service';
+import { MainService } from '@app/services/main.service';
 import { User } from 'firebase/auth';
 import { FooterComponent } from './components/footer/footer.component';
 import { HeaderComponent } from './components/header/header.component';
@@ -28,12 +28,12 @@ import { UserComponent } from './components/user/user.component';
 })
 export class TodosComponent implements OnInit {
   isGuest: boolean = false;
-  auth = inject(AuthService);
+  main = inject(MainService);
   router = inject(Router);
   currentUser$: User | null | undefined;
 
   constructor() {
-    this.auth.getUser().subscribe((user) => {
+    this.main.getUser().subscribe((user) => {
       this.currentUser$ = user;
     });
   }
@@ -41,6 +41,6 @@ export class TodosComponent implements OnInit {
   ngOnInit(): void {}
 
   logOut() {
-    this.auth.signOut().then(() => this.router.navigate(['/auth/login']));
+    this.main.signOut().then(() => this.router.navigate(['/auth/login']));
   }
 }

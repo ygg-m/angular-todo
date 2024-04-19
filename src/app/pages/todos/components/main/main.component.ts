@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { TodoComponent } from '@app/pages/todos/components/todo/todo.component';
-import { TodoService } from '@app/services/todo.service';
+import { MainService } from '@app/services/main.service';
 import { FilterEnum } from '@app/types/todo/filter.enum';
 import { TodoInterface } from '@app/types/todo/interface';
 import { Observable } from 'rxjs/internal/Observable';
@@ -16,7 +16,7 @@ import { map } from 'rxjs/operators';
 })
 export class MainComponent implements OnInit {
   visibleTodos$: Observable<TodoInterface[]>;
-  todoService = inject(TodoService);
+  todoService = inject(MainService);
   noTodoClass$: Observable<boolean>;
   isAllTodosSelected$: Observable<boolean>;
   editingId: string | null = null;

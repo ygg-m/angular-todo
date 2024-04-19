@@ -12,7 +12,7 @@ import {
   ViewChild,
   inject,
 } from '@angular/core';
-import { TodoService } from '@app/services/todo.service';
+import { MainService } from '@app/services/main.service';
 import { TodoInterface } from '@app/types/todo/interface';
 
 @Component({
@@ -41,7 +41,7 @@ export class TodoComponent implements OnInit, OnChanges {
     });
   }
 
-  todoService = inject(TodoService);
+  todoService = inject(MainService);
 
   ngOnInit(): void {
     this.editingText = this.todoProps.text;

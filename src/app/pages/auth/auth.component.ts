@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
-import { AuthService } from '@app/services/auth.service';
+import { MainService } from '@app/services/main.service';
 
 @Component({
   selector: 'app-auth',
@@ -9,7 +9,7 @@ import { AuthService } from '@app/services/auth.service';
   templateUrl: './auth.component.html',
 })
 export class AuthComponent implements OnInit {
-  auth = inject(AuthService);
+  main = inject(MainService);
   router = inject(Router);
 
   ngOnInit(): void {
@@ -17,6 +17,6 @@ export class AuthComponent implements OnInit {
   }
 
   checkLogin(): void {
-    if (this.auth.getUser() !== null) this.router.navigate(['todo']);
+    if (this.main.getUser() !== null) this.router.navigate(['todo']);
   }
 }
