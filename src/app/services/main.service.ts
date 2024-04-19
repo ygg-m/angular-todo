@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { FirebaseApp, initializeApp } from 'firebase/app';
 import { v4 as uuid } from 'uuid';
 import {
@@ -10,7 +10,8 @@ import {
   updateEmail,
   updatePassword,
   User,
-  signInAnonymously,
+  UserCredential,
+  sendPasswordResetEmail,
 } from 'firebase/auth';
 import {
   getFirestore,
@@ -34,6 +35,7 @@ export class MainService {
   private currentUser: BehaviorSubject<User | null>;
   private db;
   private colRef;
+  private loading: BehaviorSubject<boolean>;
 
   // Todo Variables
   todos$ = new BehaviorSubject<TodoInterface[]>([]);
@@ -44,26 +46,25 @@ export class MainService {
     this.firebase_client = initializeApp(env.firebase);
     this.auth = getAuth();
     this.currentUser = new BehaviorSubject<User | null>(null);
+    this.loading = new BehaviorSubject<boolean>(false);
     this.initAuthStateListener();
     this.db = getFirestore();
     this.colRef = collection(this.db, 'Users');
   }
 
-  signUp(email: string, password: string) {
+  signUp(email: string, password: string): Promise<UserCredential> {
     return createUserWithEmailAndPassword(this.auth, email, password);
   }
 
-  signIn(email: string, password: string) {
+  signIn(email: string, password: string): Promise<UserCredential> {
     return signInWithEmailAndPassword(this.auth, email, password);
   }
 
-  anonymousSignIn() {
-    return signInAnonymously(this.auth);
+  recoverPassword(email: string) {
+    return sendPasswordResetEmail(this.auth, email);
   }
 
-  recoverPassword(email: string) {}
-
-  signOut() {
+  signOut(): Promise<void> {
     return signOut(this.auth);
   }
 
