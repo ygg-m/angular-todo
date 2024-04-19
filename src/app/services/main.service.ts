@@ -24,7 +24,7 @@ export class MainService {
   private firebase_client: FirebaseApp;
   private auth;
   private currentUser: BehaviorSubject<User | null>;
-  private colRef;
+  // private colRef;
 
   // Todo Variables
   todos$ = new BehaviorSubject<TodoInterface[]>([]);
@@ -36,7 +36,7 @@ export class MainService {
     this.auth = getAuth();
     this.currentUser = new BehaviorSubject<User | null>(null);
     this.initAuthStateListener();
-    this.colRef = collection(getFirestore(), 'Users');
+    // this.colRef = collection(getFirestore(), 'Users');
   }
 
   signUp(email: string, password: string) {
@@ -65,9 +65,9 @@ export class MainService {
   private initAuthStateListener(): void {
     this.auth.onAuthStateChanged((user) => {
       this.currentUser.next(user);
-      this.getUserTodos(user?.uid!).then((res) => {
-        if (res) this.addFetchToCurrentList(res.data().todoList);
-      });
+      // this.getUserTodos(user?.uid!).then((res) => {
+      //   if (res) this.addFetchToCurrentList(res.data().todoList);
+      // });
     });
   }
 
@@ -87,15 +87,15 @@ export class MainService {
     return updateProfile(this.auth.currentUser!, { displayName: username });
   }
 
-  getUserTodos(uid: string) {
-    return getDocs(this.colRef).then((snapshot) => {
-      return snapshot.docs.find((e) => e.id.includes(uid));
-    });
-  }
+  // async getUserTodos(uid: string) {
+  //   return getDocs(this.colRef).then((snapshot) => {
+  //     return snapshot.docs.find((e) => e.id.includes(uid));
+  //   });
+  // }
 
-  saveTodosToFirebase() {
-    addDoc(this.colRef, this.todos$.value);
-  }
+  // saveTodosToFirebase() {
+  //   addDoc(this.colRef, this.todos$.value);
+  // }
 
   //
   // Todo Functions
