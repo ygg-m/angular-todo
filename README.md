@@ -1,62 +1,36 @@
-# Todo Angular Project
+# Angular 17 Todo App
 
-This is a Todo Angular project that utilizes Tailwind CSS for styling, Angular version 17.2.0 for frontend development, and Supabase for authentication and storage.
+This project is a Todo application built with Angular 17. It allows users to manage their tasks by providing features such as adding, completing, editing, filtering, and deleting todos. The application integrates with Firebase for authentication and data storage. Additionally, it supports guest mode, where users can use local storage to store their todos without requiring authentication.
 
 ## Features
 
-- Manage your todos easily with this intuitive web application.
-- Stylish UI design powered by Tailwind CSS.
-- Seamless authentication and data storage provided by Supabase.
+- **Authentication**: Users can register, login, and reset their passwords securely using Firebase Authentication.
+- **Data Management**: Todos are stored in Firebase Firestore, providing real-time synchronization across devices.
+- **Guest Mode**: Users can use the application without authentication by storing their todos locally in the browser's local storage.
+- **Todo Management**: Users can add new todos, mark todos as completed, edit existing todos, filter todos based on their completion status, and delete todos.
 
 ## Technologies Used
 
-- Angular 17.2.0: Angular is a popular front-end framework for building single-page web applications. It provides a robust structure for development, data binding, and dependency injection.
-- Tailwind CSS: Tailwind CSS is a utility-first CSS framework that allows you to quickly build custom designs without writing traditional CSS. It offers a set of pre-defined utility classes that you can apply directly to your HTML elements.
-- Supabase: Supabase is an open-source alternative to Firebase that provides a suite of tools for building scalable web applications. It offers authentication, real-time database, file storage, and more.
+- Angular 17: Frontend framework for building the user interface and application logic.
+- Firebase: Provides authentication services (Firebase Authentication) and real-time database storage (Firestore).
+- TypeScript: Programming language used to write Angular code.
+- HTML/CSS: Markup and styling for the user interface.
 
-## Live Demo
+## Getting Started
 
-You can access the live demo of this Todo Angular project [here](https://ygg-m.github.io/todo).
+To run the application locally, follow these steps:
 
-## Installation
-
-To run this project locally, follow these steps:
-
-1. Clone the repository:
-
-```
-git clone https://github.com/ygg-m/todo.git
-```
-
-2. Navigate to the project directory:
-
-```javascript
-cd todo
-```
-
-3. Install dependencies:
-
-```javascript
-// using npm
-npm install
-// using yarn
-yarn install
-```
-
-4. Start the development server:
-
-```javascript
-ng serve
-```
-
-5. Open your browser and navigate to `http://localhost:4200` to view the application.
-
-## Usage
-
-- Sign up or log in using your Supabase account to start using the application.
-- Add, edit, or delete todos as needed.
-- Your data will be securely stored in Supabase or your LocalStorage if log in as Guest.
+1. Clone the repository to your local machine.
+2. Navigate to the project directory.
+3. Install dependencies using `npm install`.
+4. Set up Firebase for authentication and Firestore for data storage. Update the Firebase configuration in the environment files (`environment.ts` and `environment.prod.ts`) with your Firebase project credentials.
+5. Build and serve the application using `ng serve`.
+6. Access the application in your browser at `http://localhost:4200`.
 
 ## Contributing
 
-Contributions are welcome! If you would like to contribute to this project, please fork the repository and submit a pull request with your changes.
+Contributions are welcome! If you find any bugs or have suggestions for new features, please open an issue or submit a pull request.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
