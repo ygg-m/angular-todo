@@ -13,10 +13,8 @@ export class AuthComponent implements OnInit {
   router = inject(Router);
 
   ngOnInit(): void {
-    this.checkLogin();
-  }
-
-  checkLogin(): void {
-    if (this.main.getUser() !== null) this.router.navigate(['todo']);
+    this.main.getUser().subscribe((user) => {
+      if (user) this.router.navigate(['/todo']);
+    });
   }
 }

@@ -7,6 +7,7 @@ import { FooterComponent } from './components/footer/footer.component';
 import { HeaderComponent } from './components/header/header.component';
 import { MainComponent } from './components/main/main.component';
 import { UserComponent } from './components/user/user.component';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-todos',
@@ -27,9 +28,12 @@ export class TodosComponent {
   currentUser$: User | null | undefined;
 
   constructor() {
-    this.main.getUser().subscribe((user) => {
-      this.currentUser$ = user;
-    });
+    this.main
+      .getUser()
+      .pipe(takeUntilDestroyed())
+      .subscribe((user) => {
+        this.currentUser$ = user;
+      });
   }
 
   logOut() {

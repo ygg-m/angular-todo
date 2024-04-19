@@ -34,8 +34,9 @@ export class LoginComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    const user = this.main.getUser();
-    if (user) this.router.navigate(['/todo']);
+    this.main.getUser().subscribe((user) => {
+      if (user) this.router.navigate(['/todo']);
+    });
   }
 
   async onSubmit(): Promise<void> {

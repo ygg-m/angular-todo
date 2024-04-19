@@ -10,9 +10,17 @@ import {
   updateEmail,
   updatePassword,
   User,
+  signInAnonymously,
 } from 'firebase/auth';
-import { getFirestore, collection, getDocs, addDoc } from 'firebase/firestore';
-import { BehaviorSubject, Observable } from 'rxjs';
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  onSnapshot,
+  setDoc,
+  doc,
+} from 'firebase/firestore';
+import { BehaviorSubject, Observable, map } from 'rxjs';
 import { env } from '../enviroments/enviroment.development';
 import { TodoInterface } from '@app/types/todo/interface';
 import { FilterEnum } from '@app/types/todo/filter.enum';
@@ -24,6 +32,7 @@ export class MainService {
   private firebase_client: FirebaseApp;
   private auth;
   private currentUser: BehaviorSubject<User | null>;
+  private db;
   private colRef;
 
   // Todo Variables
@@ -36,7 +45,8 @@ export class MainService {
     this.auth = getAuth();
     this.currentUser = new BehaviorSubject<User | null>(null);
     this.initAuthStateListener();
-    this.colRef = collection(getFirestore(), 'Users');
+    this.db = getFirestore();
+    this.colRef = collection(this.db, 'Users');
   }
 
   signUp(email: string, password: string) {
@@ -45,6 +55,10 @@ export class MainService {
 
   signIn(email: string, password: string) {
     return signInWithEmailAndPassword(this.auth, email, password);
+  }
+
+  anonymousSignIn() {
+    return signInAnonymously(this.auth);
   }
 
   recoverPassword(email: string) {}
@@ -65,9 +79,6 @@ export class MainService {
   private initAuthStateListener(): void {
     this.auth.onAuthStateChanged((user) => {
       this.currentUser.next(user);
-      this.getUserTodos(user?.uid!).then((res) => {
-        if (res) this.addFetchToCurrentList(res.data().todoList);
-      });
     });
   }
 
@@ -84,7 +95,11 @@ export class MainService {
   }
 
   updateUsername(username: string) {
-    return updateProfile(this.auth.currentUser!, { displayName: username });
+    return updateProfile(this.auth.currentUser!, {
+      displayName: username,
+    }).then(() =>
+      this.getUser().subscribe((user) => this.currentUser.next(user)),
+    );
   }
 
   async getUserTodos(uid: string) {
@@ -94,7 +109,11 @@ export class MainService {
   }
 
   saveTodosToFirebase() {
-    addDoc(this.colRef, this.todos$.value);
+    this.currentUser.subscribe(async (user) => {
+      await setDoc(doc(this.db, 'Users', user!.uid), {
+        todoList: this.todos$.value,
+      });
+    });
   }
 
   //
@@ -168,20 +187,21 @@ export class MainService {
 
   saveTodoList(todoList: TodoInterface[]): void {
     localStorage.setItem(this.localStorageKey, JSON.stringify(todoList));
+    this.currentUser.subscribe((user) => {
+      if (user) this.saveTodosToFirebase();
+    });
   }
 
   getTodoList(): void {
-    const todoListString = localStorage.getItem(this.localStorageKey);
-    todoListString ? this.todos$.next(JSON.parse(todoListString)) : null;
-  }
-
-  addFetchToCurrentList(list: TodoInterface[]): void {
-    const newList = [
-      ...list,
-      ...this.todos$.getValue().filter((e) => list.some((j) => j.id !== e.id)),
-    ];
-
-    this.todos$.next(newList);
-    this.saveTodoList(newList);
+    this.currentUser.subscribe((user) => {
+      if (user)
+        onSnapshot(doc(this.db, 'Users', user.uid), (doc) => {
+          if (doc.data() !== undefined) this.todos$.next(doc.data()!.todoList);
+        });
+      else {
+        const todoListString = localStorage.getItem(this.localStorageKey);
+        todoListString ? this.todos$.next(JSON.parse(todoListString)) : null;
+      }
+    });
   }
 }
